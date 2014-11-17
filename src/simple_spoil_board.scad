@@ -70,5 +70,4 @@ if(file_type=="stl"){
 	if(object=="y_align") y_align();
 	if(object=="x_align") x_align();
 	if(object=="spoil_board") spoil_board();
-
 }

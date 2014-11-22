@@ -22,32 +22,15 @@ module short_slit(){
 	}
 }
 module x_align(){
-	                    square([10,200]);
-	translate([20, 0])  square([10,200]);
-	translate([40, 0])  square([10,200]);
-	translate([60, 0])  square([10,200]);
-	translate([80, 0])  square([10,200]);
-	translate([100, 0]) square([10,200]);
-	translate([120, 0]) square([10,200]);
-	translate([140, 0]) square([10,200]);
-	translate([160, 0]) square([10,200]);
-	translate([180, 0]) square([10,200]);
-	translate([200, 0]) square([10,200]);
-	translate([220, 0]) square([10,200]);
-
+	for(i = [0:20:220]){
+		translate([i, 0])  square([10,200]);
+	}
 }
 module y_align(){
-	translate([0, 10])  square([240,10]);
-	translate([0, 30])  square([240,10]);
-	translate([0, 50])  square([240,10]);
-	translate([0, 70])  square([240,10]);
-	translate([0, 90])  square([240,10]);
-	translate([0, 110])  square([240,10]);
-	translate([0, 130])  square([240,10]);
-	translate([0, 150])  square([240,10]);
-	translate([0, 170])  square([240,10]);
-	translate([0, 190])  square([240,10]);
-
+	for(i = [10:20:190])
+	{
+		translate([0, i])  square([240,10]);
+	}
 }
 module spoil_board(){
 	// 119 to 170

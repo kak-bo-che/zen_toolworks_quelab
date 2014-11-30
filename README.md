@@ -21,6 +21,7 @@ as per settings on stepper controllers:
 steps_per_mm = (STEPS_PER_REV*MICROSTEPS)/MM_PER_REV
 	200*8/8 = 200
 
+```gcode
 $0=10 (step pulse, usec)
 $1=25 (step idle delay, msec)
 $2=0 (step port invert mask:00000000)
@@ -53,13 +54,17 @@ $122=200.000 (z accel, mm/sec^2)
 $130=145.000 (x max travel, mm)
 $131=120.000 (y max travel, mm)
 $132=200.000 (z max travel, mm)
+```
 
 ## CAM
->>> $G
+```
+$G
 [G1 G54 G17 G21 G91 G94 M0 M5 M9 T0 F50.]
-
-# Defaults
+```
+# Grbl Defaults
+```
 [G0 G54 G17 G21 G90 G94 M0 M5 M9 T0 F0.]
+```
 
 ## Grbl Defaults and their meaning:
 These descriptions were taken from [LinuxCNC G-code ref](http://linuxcnc.org/docs/html/gcode.html)
@@ -111,3 +116,5 @@ By default MeshCam adds the following: G21 G91
 
 
 ## [OpenSCAM](http://openscam.com/download.html)
+
+## [Inkscape + GcodeTools](https://github.com/cnc-club/gcodetools)

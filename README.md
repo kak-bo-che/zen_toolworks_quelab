@@ -99,7 +99,11 @@ Not important because the spindle used on the ZTW is air cooled when in operatio
 ### T0
 ### F0. Feed Rate set to 0
 
-## MakerCam notes
+## 2D and 2.5D Workflow
+
+### MakerCam notes
+I didn't look too deeply into using MakerCAM because of some of its limitations.
+
 By default MakerCam seems to add the following to the beginning of the G-code File:
 
 G21 G92 G40
@@ -107,14 +111,21 @@ G21 G92 G40
 * G90 Absolute Machine Positioning
 * G40 Tool radius comp off [Not Supported by Grbl](http://www.shapeoko.com/wiki/index.php/G-Code#G-code_Not_supported_by_Grbl)
 
-MakerCam also appears to give absolute positions
+## [Inkscape + GcodeTools](https://github.com/cnc-club/gcodetools)
+GcodeTools is good to use for simple follow path engraving operations.
+[Instructions](http://www.shapeoko.com/wiki/index.php/User:BHSPitMonkey/Inkscape_and_Gcodetools_Tutorial#Document_Setup).
+Copy the [header](./header)/[footer](./footer) files from this repository into the specified output directory to automatically add the necessary gcode to use start position offset and start/stop the spindle.
 
-## MeshCam Notes
+## 3D Workflow
+
+### MeshCam Notes
+MeshCam seems to be a great program for doing 3D machining operations.
+
 By default MeshCam adds the following: G21 G91
 * G21 mm
 * G91 Movements relative from First fixture location
 
 
-## [OpenSCAM](http://openscam.com/download.html)
+## OpenSCAM
+I've Used [OpenSCAM](http://openscam.com/download.html) to do 3D operations, but it is a commerical program that costs $250.
 
-## [Inkscape + GcodeTools](https://github.com/cnc-club/gcodetools)

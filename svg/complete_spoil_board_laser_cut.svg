@@ -9,12 +9,12 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="744.09448819"
-   height="1052.3622047"
+   width="851.39368"
+   height="709.66144"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="complete_spoil_board_laser_cut.dxf">
+   sodipodi:docname="complete_spoil_board_laser_cut.svg">
   <defs
      id="defs4">
     <pattern
@@ -45,14 +45,15 @@
     </pattern>
     <marker
        style="overflow:visible"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        orient="auto"
        id="DistanceX">
       <path
          id="path3027"
-         style="stroke:#000000; stroke-width:0.5"
-         d="M 3,-3 L -3,3 M 0,-5 L  0,5" />
+         style="stroke:#000000;stroke-width:0.5"
+         d="M 3,-3 -3,3 M 0,-5 0,5"
+         inkscape:connector-curvature="0" />
     </marker>
     <pattern
        y="0"
@@ -82,14 +83,15 @@
     </pattern>
     <marker
        style="overflow:visible"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        orient="auto"
        id="DistanceX-0">
       <path
          id="path4240"
-         style="stroke:#000000; stroke-width:0.5"
-         d="M 3,-3 L -3,3 M 0,-5 L  0,5" />
+         style="stroke:#000000;stroke-width:0.5"
+         d="M 3,-3 -3,3 M 0,-5 0,5"
+         inkscape:connector-curvature="0" />
     </marker>
     <pattern
        y="0"
@@ -119,14 +121,15 @@
     </pattern>
     <marker
        style="overflow:visible"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        orient="auto"
        id="DistanceX-7">
       <path
          id="path4385"
-         style="stroke:#000000; stroke-width:0.5"
-         d="M 3,-3 L -3,3 M 0,-5 L  0,5" />
+         style="stroke:#000000;stroke-width:0.5"
+         d="M 3,-3 -3,3 M 0,-5 0,5"
+         inkscape:connector-curvature="0" />
     </marker>
   </defs>
   <sodipodi:namedview
@@ -146,7 +149,11 @@
      inkscape:window-height="749"
      inkscape:window-x="89"
      inkscape:window-y="75"
-     inkscape:window-maximized="0" />
+     inkscape:window-maximized="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -155,7 +162,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -163,7 +170,8 @@
      inkscape:label="base_layer"
      inkscape:groupmode="layer"
      id="layer1"
-     style="display:inline">
+     style="display:inline"
+     transform="translate(0,-342.70077)">
     <g
        id="g3036"
        inkscape:label="0"
@@ -2113,11 +2121,13 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="x_layer" />
+     inkscape:label="x_layer"
+     transform="translate(0,-342.70077)" />
   <g
      inkscape:groupmode="layer"
      id="layer3"
-     inkscape:label="y_layer">
+     inkscape:label="y_layer"
+     transform="translate(0,-342.70077)">
     <g
        id="g4618"
        transform="translate(16.444879,217.41337)">

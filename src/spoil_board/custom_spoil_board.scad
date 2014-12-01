@@ -1,9 +1,16 @@
+// Usage
+// openscad -o stl/custom_spoil_board_base.dxf -D 'file_type="dxf"' src/spoil_board/custom_spoil_board.scad
+// openscad -o stl/custom_spoil_board_x.dxf -D 'file_type="dxf"' -D 'object="x_align"'  src/spoil_board/custom_spoil_board.scad
+// openscad -o stl/custom_spoil_board_y.dxf -D 'file_type="dxf"' -D 'object="y_align"'  src/spoil_board/custom_spoil_board.scad
+
 object="spoil_board";
 file_type="dxf";
 
 $fn=60;
 width=240;
 length=200;
+max_x=145;
+max_y=120;
 extrusion_outside_width=19.5;
 extrusion_inside_width=10;
 extrusion_length=200;
@@ -22,14 +29,14 @@ module extrusion_cut(width){
 }
 
 module x_align(){
-	for(i = [0:20:220]){
-		translate([i, 0])  square([10,200]);
+	for(i = [0:20:max_x]){
+		translate([i, 0])  square([10,max_y]);
 	}
 }
 module y_align(){
-	for(i = [10:20:190])
+	for(i = [10:20:max_y])
 	{
-		translate([0, i])  square([240,10]);
+		translate([0, i])  square([max_x,10]);
 	}
 }
 module extrusion_slits(cut_offsets){
@@ -79,7 +86,7 @@ if(file_type=="stl"){
 	if(object=="x_align") linear_extrude(height=1) x_align();
 	if(object=="spoil_board") linear_extrude(height=1) spoil_board(width, length);
 } else {
-	if(object=="y_align") y_align();
-	if(object=="x_align") x_align();
+	if(object=="y_align") translate([37, 27, 0]) y_align();
+	if(object=="x_align") translate([37, 27, 0]) x_align();
 	if(object=="spoil_board") spoil_board(width, length);
 }

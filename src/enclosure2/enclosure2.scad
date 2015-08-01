@@ -90,11 +90,11 @@ module pwm_up(){
 }
 
 module pi_up(){
-  difference(){
-    translate([rp_width, 0]) rotate(90) RaspberryPi2(); //RaspberryPi2MountingHoles();
+//  difference(){
+    translate([rp_width, 0]) rotate(90) RaspberryPi2MountingHoles();//RaspberryPi2(); //RaspberryPi2MountingHoles();
     //translate([2, 18]) make_slots(rp_width - 4, 5);
-    translate([2, rp_height - panel_thickness - 3]) make_slots(rp_width - 4, 5);
-  }
+    translate([2, rp_height - panel_thickness]) make_slots(rp_width - 4, 5);
+  //}
 }
 
 ubec_height=35;

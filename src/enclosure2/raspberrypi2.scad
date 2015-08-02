@@ -13,13 +13,20 @@ module RaspberryPi2MountingHoles(){
 }
 module RaspberryPi2(){
 	rp_radius=3;
+  first_usb_center=47;
+  second_usb_center=29;
+
 	difference(){
 //		square([85, 56]);
-		hull(){
-			translate([rp_radius, rp_radius]) circle(r=rp_radius);
-			translate([rp_radius, 56 - rp_radius]) circle(r=rp_radius);
-			translate([85 - rp_radius, rp_radius]) circle(r=rp_radius);
-			translate([85 - rp_radius, 56 - rp_radius]) circle(r=rp_radius);
+		union(){
+			hull(){
+				translate([rp_radius, rp_radius]) circle(r=rp_radius);
+				translate([rp_radius, 56 - rp_radius]) circle(r=rp_radius);
+				translate([85 - rp_radius, rp_radius]) circle(r=rp_radius);
+				translate([85 - rp_radius, 56 - rp_radius]) circle(r=rp_radius);
+			}
+			translate([rp_height + 1, first_usb_center]) square([2, 15], center=true);
+			translate([rp_height + 1, second_usb_center]) square([2, 15], center=true);
 		}
 		RaspberryPi2MountingHoles();
 	}

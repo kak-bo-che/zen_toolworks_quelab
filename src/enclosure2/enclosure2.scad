@@ -22,13 +22,18 @@ width_slots=7;
 board_widths = arduino_width + rp_width + pwm_width + 2*board_offset + board_buffer;
 
 module wire_pin(length, height){
+  ledge_width = 2.5*panel_thickness;
+  ledge_offset = (ledge_width - panel_thickness)/2;
   union(){
     square([length, panel_thickness]);
-    square([panel_thickness, height+ panel_thickness]);
-    translate([length - panel_thickness, 0]) square([panel_thickness, height+ panel_thickness]);
+    square([panel_thickness, height+ 2*panel_thickness]);
+    translate([length - panel_thickness, 0]) square([panel_thickness, height+ 2*panel_thickness]);
+    translate([-ledge_offset, height]) square([2.5*panel_thickness, panel_thickness]);
+    translate([length -ledge_offset - panel_thickness, height]) square([2.5*panel_thickness, panel_thickness]);
+
   }
 }
-module make_slots(length, slot_count, reverse=false){
+module make_slots(length, slot_count, reverse=false, slop=0){
 
   slot_size=length/slot_count;
   offset= reverse?slot_size:0;
@@ -36,7 +41,7 @@ module make_slots(length, slot_count, reverse=false){
   extra = odd && !reverse?1:0;
 
   for(x=[0:floor((slot_count + extra)/2) - 1]){
-    translate([2*x*slot_size + offset, 0]) square([slot_size, panel_thickness]);
+    translate([2*x*slot_size + offset -slop/2, 0]) square([slot_size + slop, panel_thickness]);
   }
 }
 module rounded_square(width, height, radius){
@@ -80,21 +85,30 @@ module zenback(){
 
 module arduino_up(){
   union(){
-    translate([arduino_width, arduino_height + 10]) rotate(180) projection(cut=true) arduino();
-    square([arduino_width - 5, 11]);
+    translate([arduino_width, arduino_height + 10]) rotate(180) projection(cut=false) arduino(UNO);
+    //square([arduino_width - 5, 11]); // gShield overhang
   }
 }
 
 module pwm_up(){
-   translate([pwm_width, 0]) rotate(90) spindle_pwm();
+   //translate([pwm_width, 0]) rotate(90) spindle_pwm();
+   translate([pwm_width, 0]) rotate(90) spindle_pwm_holes();
+
 }
 
 module pi_up(){
-//  difference(){
-    translate([rp_width, 0]) rotate(90) RaspberryPi2MountingHoles();//RaspberryPi2(); //RaspberryPi2MountingHoles();
-    //translate([2, 18]) make_slots(rp_width - 4, 5);
-    translate([2, rp_height - panel_thickness]) make_slots(rp_width - 4, 5);
-  //}
+  //translate([rp_width, 0]) rotate(90) RaspberryPi2();
+  translate([rp_width, 0]) rotate(90) RaspberryPi2MountingHoles();
+}
+
+module pi_side(){
+  usb_height=16;
+  usb_width=16;
+  first_usb_center=56-47;
+  second_usb_center=56-29;
+
+  translate([first_usb_center, usb_height/2]) square([usb_width, usb_height], center=true);
+  translate([second_usb_center, usb_height/2]) square([usb_width, usb_height], center=true);
 }
 
 ubec_height=35;
@@ -109,13 +123,15 @@ module ubec(){
   translate([0, ubec_height/3]) ubec_mounts();
   translate([0, 2*ubec_height/3]) ubec_mounts();
 
-  square([ubec_width, ubec_height]);
+//  square([ubec_width, ubec_height]);
 }
 
 module circuit_boards(){
-  translate([0, 0]) arduino_up(); //pwm_height - arduino_height])
+  measured_arduino_offset=10;
+  measured_rp_offset=8;
+  translate([0, measured_arduino_offset]) arduino_up(); //pwm_height - arduino_height])
   translate([arduino_width + board_offset, 0]) pwm_up();
-  translate([arduino_width + pwm_width + 2*board_offset, 0]) pi_up();
+  translate([arduino_width + pwm_width + 2*board_offset, measured_rp_offset]) pi_up();
   translate([arduino_width + pwm_width + rp_width + 2*board_offset + board_offset,  (rp_height - ubec_height)/3  ]) ubec();
 }
 
@@ -127,20 +143,6 @@ module base_mounting_holes(length, width, radius){
   translate([length - radius, width - radius]) circle(d=hole_size);
 }
 
-module base_plate(){
-  difference() {
-    rounded_square(case_length, case_width, corner_radius);
-    //square([case_length, case_width]);
-    translate([(case_length - 2*corner_radius - board_widths)/2, corner_radius + panel_thickness]) circuit_boards();
-    translate([1.5*corner_radius, corner_radius - panel_thickness/2 ]) make_slots(case_length - 3*corner_radius, length_slots, true);
-    translate([1.5*corner_radius, case_width -corner_radius - panel_thickness/2 ]) make_slots(case_length - 3*corner_radius, length_slots, true);
-    translate([corner_radius + panel_thickness/2, 1.5*corner_radius]) rotate(90) make_slots(case_width - 3*corner_radius, width_slots, true);
-    translate([case_length - corner_radius + panel_thickness/2, 1.5*corner_radius]) rotate(90) make_slots(case_width - 3*corner_radius, width_slots, true);
-    base_mounting_holes(case_length, case_width, corner_radius);
-    base_mounting_holes(case_length, case_width, corner_radius + corner_radius);
-  }
-}
-
 module power_side(){
   plate_height = case_height;
   plate_width = case_width - 3*corner_radius;
@@ -148,10 +150,11 @@ module power_side(){
     difference() {
      square([plate_height, plate_width]);
       translate([1*plate_height/4,   3*(plate_width/4)]) aviation_connector_base();
-      translate([1.8*plate_height/4, 3*(plate_width/4)]) rotate(270)  text("48V", size=3, halign= "center");
-      translate([2.3*plate_height/4, 3*(plate_width/4)]) rotate(270)  text("12 - 24V", size=2, halign= "center");
+      translate([1.8*plate_height/4, 3*(plate_width/4)]) mirror([0,1,0]) rotate(270)  text("48V", size=3, halign= "center");
+      translate([2.3*plate_height/4, 3*(plate_width/4)]) mirror([0,1,0]) rotate(270)  text("12 - 24V", size=2, halign= "center");
       translate([3*plate_height/4,   3*(plate_width/4)]) barrel_connector_base();
       translate([(plate_height - 40)/2 + 20, 30]) case_fan(40);
+      translate([(plate_height - 40)/2 + 20, 55]) square([3, 5], center=true); //cable hole
     }
     translate([plate_height + panel_thickness, 0]) rotate(90) make_slots(case_width - 3*corner_radius, width_slots, true);
     translate([ 0, 0]) rotate(90) make_slots(case_width - 3*corner_radius, width_slots, true);
@@ -181,13 +184,35 @@ module stepper_side(){
 module spindle_side(){
   plate_height = case_height;
   plate_width = case_length - 3*corner_radius;
-  difference(){
-    union(){
-      square([plate_width, plate_height]);
-      translate([0, plate_height]) make_slots(case_length - 3*corner_radius, length_slots, true);
-      translate([0, - panel_thickness ]) make_slots(case_length - 3*corner_radius, length_slots, true);
+  standoff_height=5;
+  rp_2_spacer_nut=5.25;
+  rp_2_board_thickness=1.6;
+  centered_board_offset = (case_length - 2*corner_radius - board_widths)/2;
+   //translate([(case_length - 2*corner_radius - board_widths)/2  - 1.5*corner_radius, 0]) translate([1.5*corner_radius, 0]) arduino(UNO);
+   union(){
+    difference(){
+      union(){
+        square([plate_width, plate_height]);
+        translate([0, plate_height]) make_slots(case_length - 3*corner_radius, length_slots, true);
+        translate([0, - panel_thickness ]) make_slots(case_length - 3*corner_radius, length_slots, true);
+      }
+      translate([1.5*corner_radius + 2*arduino_width/3, 3*plate_height/4]) rotate(90) aviation_connector_base();
+      projection(cut=true) translate([centered_board_offset + arduino_width - 1.5*corner_radius, standoff_height]) rotate([90, 0, 180]) arduino(UNO);
+      translate([centered_board_offset + arduino_width + pwm_width + 2*board_offset - 1.5*corner_radius, rp_2_spacer_nut + rp_2_board_thickness]) pi_side();
     }
-    translate([part_offset + corner_radius, plate_height/2]) aviation_connector_base();
+    square([30,20]); //get rid of arduino power hole
+  }
+}
+module base_plate(){
+  difference() {
+    rounded_square(case_length, case_width, corner_radius);
+    translate([(case_length - 2*corner_radius - board_widths)/2, corner_radius + panel_thickness]) circuit_boards();
+    translate([1.5*corner_radius, corner_radius - panel_thickness/2 ]) make_slots(case_length - 3*corner_radius, length_slots, true);
+    translate([1.5*corner_radius, case_width -corner_radius - panel_thickness/2 ]) make_slots(case_length - 3*corner_radius, length_slots, true);
+    translate([corner_radius + panel_thickness/2, 1.5*corner_radius]) rotate(90) make_slots(case_width - 3*corner_radius, width_slots, true);
+    translate([case_length - corner_radius + panel_thickness/2, 1.5*corner_radius]) rotate(90) make_slots(case_width - 3*corner_radius, width_slots, true);
+    base_mounting_holes(case_length, case_width, corner_radius);
+    base_mounting_holes(case_length, case_width, corner_radius + corner_radius);
   }
 }
 
@@ -206,18 +231,18 @@ module filter_side(){
 }
 
 module case_top(){
-  offset_to_cap_x=40;
-  offset_to_cap_y=45;
+  offset_to_cap_x=41;
+  offset_to_cap_y=42.5;
   cap_diameter=30;
+  slot_slop=1;
   difference(){
     rounded_square(case_length, case_width, corner_radius);
-    translate([1.5*corner_radius, corner_radius - panel_thickness/2 ]) make_slots(case_length - 3*corner_radius, length_slots, true);
-    translate([1.5*corner_radius, case_width -corner_radius - panel_thickness/2 ]) make_slots(case_length - 3*corner_radius, length_slots, true);
-    translate([corner_radius + panel_thickness/2, 1.5*corner_radius]) rotate(90) make_slots(case_width - 3*corner_radius, width_slots, true);
-    translate([case_length - corner_radius + panel_thickness/2, 1.5*corner_radius]) rotate(90) make_slots(case_width - 3*corner_radius, width_slots, true);
+    translate([1.5*corner_radius, corner_radius - panel_thickness/2 ]) make_slots(case_length - 3*corner_radius, length_slots, true, slot_slop);
+    translate([1.5*corner_radius, case_width -corner_radius - panel_thickness/2 ]) make_slots(case_length - 3*corner_radius, length_slots, true, slot_slop);
+    translate([corner_radius + panel_thickness/2, 1.5*corner_radius]) rotate(90) make_slots(case_width - 3*corner_radius, width_slots, true, slot_slop);
+    translate([case_length - corner_radius + panel_thickness/2, 1.5*corner_radius]) rotate(90) make_slots(case_width - 3*corner_radius, width_slots, true, slot_slop);
     base_mounting_holes(case_length, case_width, corner_radius);
     translate([(case_length - 2*corner_radius - board_widths)/2 + arduino_width + board_offset + offset_to_cap_x, corner_radius + panel_thickness+ offset_to_cap_y]) {
-    //translate([(case_length - 2*corner_radius - board_widths)/2 + arduino_width + board_offset + offset_to_cap_x, corner_radius + panel_thickness+ offset_to_cap_y + cap_diameter])
       translate([0, cap_diameter]) text("TOP", size=5, halign= "center");
       circle(d=cap_diameter);
       translate([cap_diameter/2 + 7, 0]) square([10, 0.5], center=true);
@@ -238,6 +263,7 @@ module corners(length, width){
   translate([corner_radius, width - corner_radius]) rotate(270) corner_stack(corner_radius);
   translate([length - corner_radius, width - corner_radius]) rotate(180) corner_stack(corner_radius);
 }
+
 module box(){
   base_plate();
   translate([case_length+part_offset,  1.5*corner_radius]) power_side();
@@ -260,13 +286,10 @@ module rp_spacer(){
     circle(d=rp_hole);
   }
 }
-difference() {
-  box();
-//  corners(case_length, case_width);
-}
+
+box();
 translate([-30, -30]) wire_pin(ubec_width + 3*panel_thickness, 7);
 translate([-60, -30]) corner_stack(corner_radius);
 translate([-90, -30]) corner_stack(corner_radius, true);
-translate([-60, -60]) rp_bridge();
 translate([-30, -45]) rp_spacer();
 

@@ -104,11 +104,17 @@ module pi_up(){
 module pi_side(){
   usb_height=16;
   usb_width=16;
+
+  ethernet_width=16;
+  ethernet_height=12.5;
   first_usb_center=56-47;
   second_usb_center=56-29;
+  ethernet_center=56-10.25;
 
   translate([first_usb_center, usb_height/2]) square([usb_width, usb_height], center=true);
   translate([second_usb_center, usb_height/2]) square([usb_width, usb_height], center=true);
+  translate([ethernet_center, ethernet_height/2]) square([ethernet_width, ethernet_height], center=true);
+
 }
 
 ubec_height=35;
@@ -231,9 +237,9 @@ module filter_side(){
 }
 
 module case_top(){
-  offset_to_cap_x=41;
-  offset_to_cap_y=42.5;
-  cap_diameter=30;
+  offset_to_cap_x=40.65;
+  offset_to_cap_y=43.5;
+  cap_diameter=28;
   slot_slop=1;
   difference(){
     rounded_square(case_length, case_width, corner_radius);

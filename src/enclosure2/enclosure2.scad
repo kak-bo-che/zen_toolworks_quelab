@@ -187,6 +187,13 @@ module stepper_side(){
   }
 }
 
+module probe_connector(){
+  mono_jack_diameter=5.9;
+  phono_jack_diameter=6.05;
+  jack_diameter=6.1;
+  circle(d=jack_diameter);
+}
+
 module spindle_side(){
   plate_height = case_height;
   plate_width = case_length - 3*corner_radius;
@@ -203,6 +210,7 @@ module spindle_side(){
         translate([0, - panel_thickness ]) make_slots(case_length - 3*corner_radius, length_slots, true);
       }
       translate([1.5*corner_radius + 2*arduino_width/3, 3*plate_height/4]) rotate(90) aviation_connector_base();
+      translate([1.5*corner_radius + 10, 3*plate_height/4]) probe_connector();
       projection(cut=true) translate([centered_board_offset + arduino_width - 1.5*corner_radius, standoff_height]) rotate([90, 0, 180]) arduino(UNO);
       translate([centered_board_offset + arduino_width + pwm_width + 2*board_offset - 1.5*corner_radius, rp_2_spacer_nut + rp_2_board_thickness]) pi_side();
     }

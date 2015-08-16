@@ -157,7 +157,7 @@ module top(){
       translate([0, -material_thickness]) make_slots(overall_length - power_supply_length, 5, material_thickness, true);
     }
     translate([material_thickness, 0]) rotate(90) make_slots(power_supply_width, 5, material_thickness, true);
-    translate([(overall_length - power_supply_length + 30)/2, 2*power_supply_width/5]) power_switch();
+    translate([(overall_length - power_supply_length + 13)/2, 2.4*power_supply_width/5]) power_switch();
     translate([(overall_length - power_supply_length + 30)/2, 4*power_supply_width/5]) screw_terminal(2);
     % translate([material_thickness, 0]) stepper_power();
   }

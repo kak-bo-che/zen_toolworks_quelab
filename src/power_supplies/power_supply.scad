@@ -58,8 +58,17 @@ module power_supply_side(){
   }
 }
 
-module nema(){
+module nema_with_switch(){
   square([27, 42.3], center=true);
+}
+
+module nema(){
+  hole_diameter=3.2;
+  square([27, 19.1], center=true);
+  %square([49.5,22.5], center=true);
+  translate([-20, 0]) circle(d=hole_diameter);
+  translate([20, 0]) circle(d=hole_diameter);
+
 }
 
 module vent_legs(count=3, radius=10){
@@ -96,7 +105,7 @@ module ac_side(){
   difference(){
     side();
     translate([material_thickness, material_thickness]) stepper_power_side_ac();
-    translate([material_thickness + stepper_power_width + 25, power_supply_height/2 + 10]) rotate(90) nema();
+    translate([material_thickness + stepper_power_width + 25, power_supply_height/2 + 10]) nema();
     translate([material_thickness + stepper_power_width + 10, 9]) circle(d=7.5);
   }
 }

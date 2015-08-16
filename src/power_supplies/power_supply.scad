@@ -10,7 +10,7 @@ overall_height=70;
 stepper_power_width=30;
 
 part_separation=5;
-material_thickness=3.1;
+material_thickness=3.04;
 corner_radius=10;
 hole_size=3.2;
 

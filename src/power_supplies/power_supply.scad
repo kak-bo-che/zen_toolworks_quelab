@@ -110,7 +110,6 @@ module ac_side(){
   }
 }
 
-
 module dc_side(){
   difference(){
     side();
@@ -174,13 +173,13 @@ module top(){
 
 module bottom(){
   bottom_length = overall_length - power_supply_length - material_thickness;
-  square([bottom_length, power_supply_width]);
-  translate([0, power_supply_width]) make_slots(bottom_length, 5, material_thickness, true);
-  translate([0, -material_thickness]) make_slots(bottom_length, 5, material_thickness, true);
+  square([2*bottom_length/5, power_supply_width]);
+  translate([0, power_supply_width]) make_slots(2*bottom_length/5, 2, material_thickness, true);
+  translate([0, -material_thickness]) make_slots(2*bottom_length/5, 2, material_thickness, true);
 }
-
+%square([300, 300]);
 ac_side();
-translate([0, -part_separation]) mirror([0,1,0]) dc_side();
-translate([0, -(overall_height + power_supply_width + 2* part_separation)]) top();
-translate([-power_supply_width - part_separation, 0]) front();
-translate([material_thickness, overall_height + part_separation]) bottom();
+translate([0, +part_separation + 2*overall_height]) mirror([0,1,0]) dc_side();
+translate([overall_height, 2*(overall_height + part_separation + 2)]) rotate(90) front();
+translate([overall_height + part_separation, 2*(overall_height + part_separation + 2)]) top();
+translate([overall_length - power_supply_length + overall_height + 2*part_separation, 2*(overall_height + part_separation + 2)]) bottom();

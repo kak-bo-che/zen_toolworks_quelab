@@ -1,8 +1,8 @@
 include <raspberrypi2.scad>;
 include <arduino.scad>
 include <spindle_pwm.scad>
-include <slots.scad>
-include <rounded_square.scad>
+include <../util/slots.scad>
+include <../util/rounded_square.scad>
 use <case_fan.scad>
 include <vents.scad>
 $fn=50;

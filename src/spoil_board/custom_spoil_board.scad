@@ -48,7 +48,7 @@ module extrusion_slits(cut_offsets){
 module mounting_holes(){
 	diameter = 4;
 	side_offset = 15;
-	offsets = [[16, 26], [65.5, 75.5], [165.5, 175.5], [215, 224]];	
+	offsets = [[16, 26], [65.5, 75.5], [165.5, 175.5], [215, 224]];
 	center1 = offsets[0][1] + (offsets[1][0] - offsets[0][1])/2;
 	center2 = offsets[1][1] + (offsets[2][0] - offsets[1][1])/2;
 	center3 = offsets[2][1] + (offsets[3][0] - offsets[2][1])/2;
@@ -71,7 +71,7 @@ module removed_sides(){
 
 module spoil_board(width, length){
 	center_support_width = 50;
-	center_offset = length/2 - center_support_width/2; 
+	center_offset = length/2 - center_support_width/2;
 	translate([0, center_offset]) square([width, center_support_width]);
 	difference(){
 		base_plate(width, length);

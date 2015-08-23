@@ -1,15 +1,15 @@
 $fn=20;
 
-case_length=300;
-case_width=300;
+case_length=100;
+case_width=100;
 min_height=40;
 panel_thickness=3.1; //3.1, 1.55, 5.7 ?
 
 corner_pieces = floor(min_height/panel_thickness);
 case_height=corner_pieces*panel_thickness;
 corner_radius=10;
-length_slots=13;
-width_slots=13;
+length_slots=7;
+width_slots=7;
 
 hole_size=3.2;
 part_separation=10;

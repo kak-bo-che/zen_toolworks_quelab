@@ -13,10 +13,10 @@ Inital box was created with [Box Maker for InkScape](http://wyolum.com/t-slot-bo
 ## Compiling and Installing Grbl
 
 ### Grbl Soft Settings
-as per settings on stepper controllers: 
+as per settings on stepper controllers:
 * MICROSTEPS 8
 * STEPS_PER_REV 200.0
-* MM_PER_REV 8.0 
+* MM_PER_REV 8.0
 
 steps_per_mm = (STEPS_PER_REV*MICROSTEPS)/MM_PER_REV
 	200*8/8 = 200
@@ -25,7 +25,7 @@ steps_per_mm = (STEPS_PER_REV*MICROSTEPS)/MM_PER_REV
 $0=10 (step pulse, usec)
 $1=25 (step idle delay, msec)
 $2=0 (step port invert mask:00000000)
-$3=2 (dir port invert mask:00000010)
+$3=5 (dir port invert mask:00000101)
 $4=0 (step enable invert, bool)
 $5=0 (limit pins invert, bool)
 $6=0 (probe pin invert, bool)
@@ -33,8 +33,7 @@ $10=3 (status report mask:00000011)
 $11=0.020 (junction deviation, mm)
 $12=0.002 (arc tolerance, mm)
 $13=0 (report inches, bool)
-$14=1 (auto start, bool)
-$20=1 (soft limits, bool)
+$20=0 (soft limits, bool)
 $21=0 (hard limits, bool)
 $22=1 (homing cycle, bool)
 $23=3 (homing dir invert mask:00000011)
@@ -72,7 +71,7 @@ These descriptions were taken from [LinuxCNC G-code ref](http://linuxcnc.org/doc
 
 ### G54 - Select Coordinate System 1
 This is a fixed position saved from restart to restart. It is used as a zero position for a part. So if there is a fixture
-that you want to start from use this. This is related to G92 (change the current coordinate system to the current tool position). 
+that you want to start from use this. This is related to G92 (change the current coordinate system to the current tool position).
 
 [Description of Work Coordinate System for Grbl](http://www.shapeoko.com/wiki/index.php/G-Code#Using_the_Work_Coordinate_Systems)
 
@@ -94,7 +93,7 @@ Related to Cycle Start which is set to Auto by default for grbl. This state esse
 M3 will start the Spindle unless (S0). Set Spindle speed up to S12000 to turn the spindle on.
 
 ### M9 Turn off all Coolant
-Not important because the spindle used on the ZTW is air cooled when in operation. 
+Not important because the spindle used on the ZTW is air cooled when in operation.
 
 ### T0
 ### F0. Feed Rate set to 0
@@ -127,5 +126,56 @@ By default MeshCam adds the following: G21 G91
 
 
 ## OpenSCAM
-I've Used [OpenSCAM](http://openscam.com/download.html) to do 3D operations, but it is a commerical program that costs $250.
+I've Used [OpenSCAM](http://openscam.com/download.html) to do 3D operations, but it is a commercial program that costs $250.
 
+
+# grblweb on arch linux
+* vi config.js
+* pacman -Sy
+* pacman -S git nginx
+* useradd -mrU grbl
+* add gbrl user to uucp to access */dev/ttyACM0*
+
+*/etc/systemd/system/multi-user.target.wants/grblweb.service*
+
+```ini
+[Unit]
+Description=GRBLWeb Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/node /opt/grblweb/server.js
+WorkingDirectory=/opt/grblweb
+KillSignal=SIGINT
+Restart=on-failure
+RestartSec=5
+User=grbl
+Group=grbl
+
+[Install]
+WantedBy=multi-user.target
+```
+
+
+## chilipeppr
+* [JSON Serial Port Server](https://github.com/johnlauer/serial-port-json-server) [Direct Download Link](http://chilipeppr.com/downloads/v1.83/serial-port-json-server_linux_arm.tar.gz)
+
+```ini
+[Unit]
+Description=Serial Port Json Server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/opt/serial-port-json-server/serial-port-json-server
+WorkingDirectory=/opt/serial-port-json-server
+KillSignal=SIGINT
+Restart=on-failure
+RestartSec=5
+User=grbl
+Group=grbl
+
+[Install]
+WantedBy=multi-user.target
+```

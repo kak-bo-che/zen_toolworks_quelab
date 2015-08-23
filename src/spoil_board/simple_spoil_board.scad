@@ -161,11 +161,10 @@ if(file_type=="stl"){
 	if(object=="x_align") x_align();
 	if(object=="spoil_board") spoil_board();
 	if(object=="circuit_board")  {
-		spoil_board();
+		// spoil_board();
 		//translate([length + 10, 0])
-		%circuit_board_cutout(board_length, board_width);
-		//translate([length + 10, -(width + 10)])
-		%circuit_board_cover(board_length, board_width);
+		circuit_board_cutout(board_length, board_width);
+		translate([length + 10, 0]) circuit_board_cover(board_length, board_width);
 
 	}
 }

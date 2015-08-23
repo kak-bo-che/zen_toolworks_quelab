@@ -7,6 +7,7 @@ long_slit_length=140;
 short_slit_length=51;
 start_x=32;
 start_y=24;
+$fn=30;
 // Common Measurements:
 // 51.10 x 76.15
 // 101.61 x 153.02
@@ -146,7 +147,7 @@ module circuit_board_cover(board_length, board_width){
 		translate([20, width/2]) slit_holes(6, true);
 		translate([170, width/2]) slit_holes(6, true, 12, [1,3,9,11]);
 		translate([220, width/2]) slit_holes(6, true);
-		translate([70, start_y+board_width]) z_probe_slit();
+		translate([70, start_y+board_width]) circle(d=20);
 	}
 }
 

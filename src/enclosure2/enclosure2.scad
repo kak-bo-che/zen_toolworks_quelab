@@ -1,10 +1,11 @@
 include <raspberrypi2.scad>;
-include <arduino.scad>
-include <spindle_pwm.scad>
+include <../util/arduino.scad>
+include <../util/spindle_pwm.scad>
 include <../util/slots.scad>
 include <../util/rounded_square.scad>
-use <case_fan.scad>
-include <vents.scad>
+include <../util/aviation_connector.scad>
+use <../util/case_fan.scad>
+include <../util/vents.scad>
 $fn=50;
 
 part_offset=10;
@@ -50,13 +51,6 @@ module corner_stack(radius, hex_hole=false){
   }
 }
 
-module aviation_connector_base(){
-  intersection(){
-    square([14.5, 17], center=true);
-    circle(d=16);
-  }
-}
-
 module barrel_connector_base(){
   circle(d=7.9);
 }
@@ -67,8 +61,13 @@ module zenback(){
 
 module arduino_up(){
   union(){
-    translate([arduino_width, arduino_height + 10]) rotate(180) projection(cut=false) arduino(UNO);
-    //square([arduino_width - 5, 11]); // gShield overhang
+    translate([arduino_width, arduino_height + 10]) rotate(180) { //projection(cut=false)
+      holePlacement() {
+       circle(d=hole_size);
+      }
+      %arduino(UNO);
+    }
+    %square([arduino_width - 5, 11]); // gShield overhang
   }
 }
 
@@ -141,7 +140,8 @@ module power_side(){
       translate([1.8*plate_height/4, 3*(plate_width/4)]) mirror([0,1,0]) rotate(270)  text("48V", size=3, halign= "center");
       translate([2.3*plate_height/4, 3*(plate_width/4)]) mirror([0,1,0]) rotate(270)  text("12 - 24V", size=2, halign= "center");
       translate([3*plate_height/4,   3*(plate_width/4)]) barrel_connector_base();
-      translate([(plate_height - 40)/2 + 20, 30]) case_fan(40);
+      translate([(plate_height - 40)/2 + 20, 30]) case_fan_holes(40);
+      %translate([(plate_height - 40)/2 + 20, 30]) extruded_fan(40);
       translate([(plate_height - 40)/2 + 20, 55]) square([3, 5], center=true); //cable hole
     }
     translate([plate_height + panel_thickness, 0]) rotate(90) make_slots(case_width - 3*corner_radius, width_slots, panel_thickness, true);
